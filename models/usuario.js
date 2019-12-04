@@ -13,7 +13,7 @@ const Usuario = sequelize.define('usuario',{
             type: Sequelize.STRING,
             allowNull: false
         },
-        Usuario: {
+        usuario: {
             type: Sequelize.STRING,
             allowNull: false
         },
@@ -21,7 +21,7 @@ const Usuario = sequelize.define('usuario',{
             type: Sequelize.STRING,
             allowNull: false
         },
-        roll: {
+        rol: {
             type: Sequelize.STRING,
             allowNull: false
         }

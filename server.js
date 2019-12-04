@@ -1,16 +1,19 @@
 require('./config/config');
 
 const express = require('express');
-
+const jwt = require('jsonwebtoken');
 const app = express();
 
 const bodyParser = require('body-parser');
 
 // parser application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
-app.use(bodyParser.json());
+app.use(bodyParser.json())
+
+// Configuración global de rutas
+app.use(require('./routes/index'));
 
 /**
  *  Home del server --> /
@@ -25,8 +28,7 @@ app.get('/', (req, res) => {
 
 });
 
-// Configuración global de rutas
-app.use(require('./routes/index'));
+
 
 app.listen(process.env.PORT, ()=> {
     console.log("Server running on port ", process.env.PORT);

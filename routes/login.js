@@ -3,21 +3,20 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 
-const usuario = require('../models/usuario');
+const Usuario = require('../models/usuario');
 
 /**
- *  Login del server --> /login
+ *  Login del Server --> /login
  */
-app.post('login', (req,res) =>{
+app.post('/login', (req, res) => {
+    //Obtenemos las credenciales
+    let body = req.body;
 
-    // Obtenemos las credenciales 
-    let body = req.body; 
-
-    // Se manda un log con los datos que se recibieron 
+    // Se manda un log con los datos que se recibieron
     console.log(body);
 
-    // Se busca al usuario
-    usuario.findOne(
+    // Se busca el usuario
+    Usuario.findOne(
         {
             where: {
                 usuario: body.usuario,
@@ -26,36 +25,33 @@ app.post('login', (req,res) =>{
         }
     )
     .then(usuario => {
-        // Se valida si se encontró el usuario 
+        // Se valida si se encontró al usuario
         if (usuario != null) {
-
             console.log(usuario);
 
             // Se genera su token JWT
-            let token = jwk.sign({
+            let token = jwt.sign({
                 usuario
-            }, 'seed-secret-5APROGM-E03-icas-2019-1', {expiresIn: 60 * 60 * 24 *30 });
+            }, 'seed-secret-5APROGM-E08-al17154-2019-1', {expiresIn: 60 * 60 * 24 * 30});
 
             // Se regresa la respuesta
             res.json({
                 ok: true,
                 usuario,
                 token
-            });
-
+            });   
         }else {
             res.status(401).json({
                 ok: false,
                 err: {
-                    message: 'Usuario o contraseña incorrectos',
+                    message: "Usuario o contraseña incorrectos.",
                 }
             });
         }
     })
+    .catch(err => {
 
-    .cath(err =>{
-
-        // Se manda a la consola 
+        // Se manda a la consola
         console.log("Error al hacer la consulta: "+err);
 
         return res.status(500).json({
@@ -65,7 +61,6 @@ app.post('login', (req,res) =>{
             }
         });
     });
-    
 });
 
 module.exports = app;
